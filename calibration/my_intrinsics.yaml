@@ -1,0 +1,60 @@
+#%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+
+# Camera calibration and distortion parameters (OpenCV)
+FrontCamera.fx: 4.8011318409463320e+02
+FrontCamera.fy: 4.7830507968352191e+02
+FrontCamera.cx: 9.7821348179632912e+02
+FrontCamera.cy: 5.4957255646087992e+02
+
+FrontCamera.k1: -9.6267830452521450e-02
+FrontCamera.k2: 1.1741888787963320e-02
+FrontCamera.k3: -5.7584372597573874e-03
+FrontCamera.k4: 8.7356411790594452e-04
+
+
+
+LeftCamera.fx: 4.8008410277848213e+02
+LeftCamera.fy: 4.7848639404105364e+02
+LeftCamera.cx: 9.9216233628405803e+02
+LeftCamera.cy: 5.3874395419687175e+02
+
+LeftCamera.k1: -8.6632696241985344e-02
+LeftCamera.k2: 6.6984995389252570e-03
+LeftCamera.k3: -9.8465327645725353e-03
+LeftCamera.k4: 2.5511918077534119e-03
+
+
+
+BackCamera.fx: 4.8330732686228856e+02
+BackCamera.fy: 4.8159066913213104e+02
+BackCamera.cx: 9.5191022532914360e+02
+BackCamera.cy: 5.5233172026300974e+02
+
+BackCamera.k1: -9.8910776464553110e-02
+BackCamera.k2: 1.0423700239892144e-02
+BackCamera.k3: -4.6702674565410243e-03
+BackCamera.k4: 6.3700997768718882e-04
+
+
+
+RightCamera.fx: 4.8230798651116356e+02
+RightCamera.fy: 4.8033341362286990e+02
+RightCamera.cx: 9.8770168903363447e+02
+RightCamera.cy: 5.4238389741661661e+02
+
+RightCamera.k1: -8.8858612100549128e-02
+RightCamera.k2: -3.8653159672533597e-03
+RightCamera.k3: 5.8051669994066395e-03
+RightCamera.k4: -2.2490094010112730e-03
+
+#How many points will be used in the optimization process
+PointsNumber: 54
+#Iterations the optimization process will continue
+Itervals: 10000
+
+#None , Huber , Cauchy , Tukey
+RobustKernel: Huber
