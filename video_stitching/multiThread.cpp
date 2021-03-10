@@ -39,7 +39,7 @@ void stich_frame(int tid){
         cap3>>imgs[2];
         cap4>>imgs[3];
 
-        sticher.stich(panoramaResult, imgs, remapImgs, pc::seamTypeFirstFrame);
+        sticher.stich(panoramaResult, imgs, remapImgs);
         sem_post(semaphore_display);
         clock_t time_end2=std::clock();
     }

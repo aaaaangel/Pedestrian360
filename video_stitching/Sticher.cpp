@@ -54,28 +54,64 @@ pc::Sticher::Sticher(){
 
 void pc::Sticher::photometricAlignment_std(cv::UMat &imgF, cv::UMat &imgR, cv::UMat &imgB, cv::UMat &imgL) {
 
-    cv::Mat F_YCbCr, L_YCbCr, B_YCbCr, R_YCbCr;
-    cv::cvtColor(imgF, F_YCbCr, cv::COLOR_BGR2YCrCb);
-    cv::cvtColor(imgR, R_YCbCr, cv::COLOR_BGR2YCrCb);
-    cv::cvtColor(imgB, B_YCbCr, cv::COLOR_BGR2YCrCb);
-    cv::cvtColor(imgL, L_YCbCr, cv::COLOR_BGR2YCrCb);
-    std::vector<cv::Mat> F_channels, L_channels, B_channels, R_channels;
-    cv::split(F_YCbCr, F_channels);
-    cv::split(R_YCbCr, R_channels);
-    cv::split(B_YCbCr, B_channels);
-    cv::split(L_YCbCr, L_channels);
+//    cv::Mat F_YCbCr, L_YCbCr, B_YCbCr, R_YCbCr;
+//    cv::cvtColor(imgF, F_YCbCr, cv::COLOR_BGR2YCrCb);
+//    cv::cvtColor(imgR, R_YCbCr, cv::COLOR_BGR2YCrCb);
+//    cv::cvtColor(imgB, B_YCbCr, cv::COLOR_BGR2YCrCb);
+//    cv::cvtColor(imgL, L_YCbCr, cv::COLOR_BGR2YCrCb);
+//    std::vector<cv::Mat> F_channels, L_channels, B_channels, R_channels;
+//    cv::split(F_YCbCr, F_channels);
+//    cv::split(R_YCbCr, R_channels);
+//    cv::split(B_YCbCr, B_channels);
+//    cv::split(L_YCbCr, L_channels);
+//
+//    cv::Scalar meanFR_F, meanFR_R, meanRB_R, meanRB_B, meanBL_B, meanBL_L, meanLF_L, meanLF_F;
+//    cv::Scalar stdFR_F, stdFR_R, stdRB_R, stdRB_B, stdBL_B, stdBL_L, stdLF_L, stdLF_F;
+//    cv::meanStdDev(F_YCbCr, meanFR_F, stdFR_F, overlapFR);
+//    cv::meanStdDev(R_YCbCr, meanFR_R, stdFR_R, overlapFR);
+//    cv::meanStdDev(R_YCbCr, meanRB_R, stdRB_R, overlapRB);
+//    cv::meanStdDev(B_YCbCr, meanRB_B, stdRB_B, overlapRB);
+//    cv::meanStdDev(B_YCbCr, meanBL_B, stdBL_B, overlapBL);
+//    cv::meanStdDev(L_YCbCr, meanBL_L, stdBL_L, overlapBL);
+//    cv::meanStdDev(L_YCbCr, meanLF_L, stdLF_L, overlapLF);
+//    cv::meanStdDev(F_YCbCr, meanLF_F, stdLF_F, overlapLF);
 
+    cv::Mat F_YCbCr, L_YCbCr, B_YCbCr, R_YCbCr;
+    std::vector<cv::Mat> F_channels, L_channels, B_channels, R_channels;
     cv::Scalar meanFR_F, meanFR_R, meanRB_R, meanRB_B, meanBL_B, meanBL_L, meanLF_L, meanLF_F;
     cv::Scalar stdFR_F, stdFR_R, stdRB_R, stdRB_B, stdBL_B, stdBL_L, stdLF_L, stdLF_F;
-    cv::meanStdDev(F_YCbCr, meanFR_F, stdFR_F, overlapFR);
-    cv::meanStdDev(R_YCbCr, meanFR_R, stdFR_R, overlapFR);
-    cv::meanStdDev(R_YCbCr, meanRB_R, stdRB_R, overlapRB);
-    cv::meanStdDev(B_YCbCr, meanRB_B, stdRB_B, overlapRB);
-    cv::meanStdDev(B_YCbCr, meanBL_B, stdBL_B, overlapBL);
-    cv::meanStdDev(L_YCbCr, meanBL_L, stdBL_L, overlapBL);
-    cv::meanStdDev(L_YCbCr, meanLF_L, stdLF_L, overlapLF);
-    cv::meanStdDev(F_YCbCr, meanLF_F, stdLF_F, overlapLF);
+    omp_set_num_threads(4);
+#pragma omp parallel for
+    for(int i=0; i<4; i++){
+        switch (i) {
+            case 0:
+                cv::cvtColor(imgF, F_YCbCr, cv::COLOR_BGR2YCrCb);
+                cv::split(F_YCbCr, F_channels);
+                cv::meanStdDev(F_YCbCr, meanFR_F, stdFR_F, overlapFR);
+                cv::meanStdDev(F_YCbCr, meanLF_F, stdLF_F, overlapLF);
+                break;
+            case 1:
+                cv::cvtColor(imgR, R_YCbCr, cv::COLOR_BGR2YCrCb);
+                cv::split(R_YCbCr, R_channels);
+                cv::meanStdDev(R_YCbCr, meanFR_R, stdFR_R, overlapFR);
+                cv::meanStdDev(R_YCbCr, meanRB_R, stdRB_R, overlapRB);
+                break;
+            case 2:
+                cv::cvtColor(imgB, B_YCbCr, cv::COLOR_BGR2YCrCb);
+                cv::split(B_YCbCr, B_channels);
+                cv::meanStdDev(B_YCbCr, meanRB_B, stdRB_B, overlapRB);
+                cv::meanStdDev(B_YCbCr, meanBL_B, stdBL_B, overlapBL);
+                break;
+            case 3:
+                cv::cvtColor(imgL, L_YCbCr, cv::COLOR_BGR2YCrCb);
+                cv::split(L_YCbCr, L_channels);
+                cv::meanStdDev(L_YCbCr, meanBL_L, stdBL_L, overlapBL);
+                cv::meanStdDev(L_YCbCr, meanLF_L, stdLF_L, overlapLF);
+        }
+    }
 
+    omp_set_num_threads(3);
+#pragma omp parallel for
     for(int iChannel = 0; iChannel<3; iChannel++){
         Eigen::Matrix4d iA;
         iA << 	stdFR_F[iChannel] , -stdFR_R[iChannel] ,	 0.0  			,	 	0.0		,
@@ -246,9 +282,11 @@ void pc::Sticher::stich_ori(cv::Mat& result, const std::vector<cv::Mat>& imgs, s
     // remap
     std::vector<cv::UMat> images_wraped_f(numCamera);
     std::vector<cv::UMat> resize_images_wraped_f(numCamera);
-
+    omp_set_num_threads(4);
+#pragma omp parallel for
     for(int i=0;i<pc::numCamera;i++) {
         cv::remap(imgs[i], remapImgs[i], xMaps[i], yMaps[i], cv::INTER_LINEAR, cv::BORDER_REFLECT);
+//        cv::remap(imgs[i], remapImgs[i], xMaps[i], yMaps[i], cv::INTER_NEAREST, cv::BORDER_CONSTANT);
     }
 
     photometricAlignment_std(remapImgs[0], remapImgs[1], remapImgs[2], remapImgs[3]);

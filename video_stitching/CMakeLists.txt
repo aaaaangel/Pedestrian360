@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(PanoramicCamera)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
 
 set(OpenCV_DIR "/usr/local/lib/cmake/opencv4/OpenCVConfig.cmake")
 set(OpenCV_INCLUDE_DIRS "/usr/local/include/opencv4")

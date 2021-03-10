@@ -220,6 +220,9 @@ bool pc::MySeamFinder::find_dp_temporal_fast(std::vector<cv::UMat> &remapImgs, s
     }
 
     //动态规划正向过程，计算所有可能路径的代价，并记录局部最优路径
+
+    omp_set_num_threads(4);
+#pragma omp parallel for
     for(int i=0; i<pc::numCamera; i++){
         if(!flags4[i])
             continue;
